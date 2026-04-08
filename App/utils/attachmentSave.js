@@ -20,7 +20,7 @@ async function saveAttachmentsToSSD(attachments) {
 
     files.push({
       fileName: att.filename,
-      filePath: `/attachments/${uniqueName}` // 👈 URL path
+      filePath: `/attachments/${uniqueName}` 
     });
   }
 

@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const { saveAttachmentMetaModel } = require("../Models/attachmentModel");
 require("dotenv").config();
 const transporter = nodemailer.createTransport({
   host: process.env.NODE_MAILER_HOST,
@@ -25,21 +26,38 @@ const SendVerificationCode = async(email,verificationcode)=>{
         return (error)
     }
 }
-const sendReplyEmail = async (toEmail, subject, body, inReplyTo) => {
+
+const sendReplyEmail = async (
+  toEmail,
+  subject,
+  body,
+  inReplyTo,
+  file,
+) => {
   try {
-    // Ensure proper <> format
-    const formattedInReplyTo = inReplyTo.startsWith("<") 
-      ? inReplyTo 
+    const formattedInReplyTo = inReplyTo.startsWith("<")
+      ? inReplyTo
       : `<${inReplyTo}>`;
+
     const response = await transporter.sendMail({
       from: `"Support Team" <${process.env.NODE_EMAIL_USER}>`,
-      to: toEmail,  
+      to: toEmail,
       subject: subject.startsWith("Re:") ? subject : `Re: ${subject}`,
       text: body,
-      inReplyTo: formattedInReplyTo,
-      references: formattedInReplyTo, 
-    });
 
+      // ✅ FIXED attachment
+      attachments: file
+        ? [
+            {
+              filename: file.originalname,
+              content : file.buffer
+            },
+          ]
+        : [],
+
+      inReplyTo: formattedInReplyTo,
+      references: formattedInReplyTo,
+    });
     return {
       response,
       messageId: response.messageId,
@@ -48,4 +66,70 @@ const sendReplyEmail = async (toEmail, subject, body, inReplyTo) => {
     throw error;
   }
 };
+
+// const sendReplyEmail = async (
+//   toEmail,
+//   subject,
+//   body,
+//   inReplyTo,
+//   fileName,
+//   filePath
+// ) => {
+//   try {
+//     const formattedInReplyTo = inReplyTo.startsWith("<")
+//       ? inReplyTo
+//       : `<${inReplyTo}>`;
+
+//     const response = await transporter.sendMail({
+//       from: `"Support Team" <${process.env.NODE_EMAIL_USER}>`,
+//       to: toEmail,
+//       subject: subject.startsWith("Re:") ? subject : `Re: ${subject}`,
+//       text: body,
+
+//       // ✅ FIXED attachment
+//       attachments: filePath
+//         ? [
+//             {
+//               filename: fileName,
+//               path: filePath,
+//             },
+//           ]
+//         : [],
+
+//       inReplyTo: formattedInReplyTo,
+//       references: formattedInReplyTo,
+//     });
+
+//     return {
+//       response,
+//       messageId: response.messageId,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// const sendReplyEmail = async (toEmail, subject, body, inReplyTo) => {
+//   try {
+//     // Ensure proper <> format
+//     const formattedInReplyTo = inReplyTo.startsWith("<") 
+//       ? inReplyTo 
+//       : `<${inReplyTo}>`;
+//     const response = await transporter.sendMail({
+//       from: `"Support Team" <${process.env.NODE_EMAIL_USER}>`,
+//       to: toEmail,  
+//       subject: subject.startsWith("Re:") ? subject : `Re: ${subject}`,
+//       text: body,
+//       inReplyTo: formattedInReplyTo,
+//       references: formattedInReplyTo, 
+//     });
+
+//     return {
+//       response,
+//       messageId: response.messageId,
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 module.exports = { SendVerificationCode , sendReplyEmail}

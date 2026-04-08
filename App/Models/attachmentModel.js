@@ -27,4 +27,17 @@ async function GetAttachmentByIdModel(params) {
   const result = await request.execute("dbo.pEmailAttachment");
   return result.recordset;
 }
-module.exports = {EmailAttachmentModel , GetEmailAttachmentModel,GetAttachmentByIdModel}
+
+async function saveAttachmentMetaModel(params ) {
+    const pool = await dbConnect();
+    const request = pool.request();
+    request.input("Mode", sql.VarChar(50), "Insert_Meta");
+    request.input("EmailId", sql.Int, params.emailId ?? null);
+    request.input("FileName", sql.VarChar(500), params.filename ?? null);
+    request.input("MessageId", sql.VarChar(500), params.messageId ?? null);
+    request.input("PartId", sql.Int, params.partId ?? null);
+    await request.execute("dbo.pEmailAttachment");
+  }
+
+
+module.exports = {EmailAttachmentModel , GetEmailAttachmentModel,GetAttachmentByIdModel , saveAttachmentMetaModel}

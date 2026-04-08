@@ -9,6 +9,9 @@ async function SaveReplyEmailModel(params) {
     request.input("ToEmail" , sql.VarChar(250), params.toEmail ?? null);
     request.input("MessageId", sql.VarChar(500),params.messageId ?? null);
     request.input("InReplyTo", sql.VarChar(500), params.inReplyTo ?? null);
+    // this two column add in database for attachment
+    request.input("FileName", sql.VarChar(500), params.fileName ?? null);
+    request.input("FilePath", sql.VarChar(500), params.filePath ?? null);
     const result = await request.execute("dbo.pReplyEmail");
     return result.recordset;
 }

@@ -1,16 +1,16 @@
 const path = require("path"); 
 const fs = require("fs");   
-const { EmailAttachmentModel, GetEmailAttachmentModel , GetAttachmentByIdModel} = require("../Models/attachmentModel");
+const {saveAttachmentMetaModel, EmailAttachmentModel, GetEmailAttachmentModel , GetAttachmentByIdModel} = require("../Models/attachmentModel");
 
 
-async function saveAttachmentsController(emailId, files) {
+async function saveAttachmentsController(emailId, attachments) {
   try {
-    for (let file of files) {
-      await EmailAttachmentModel({
-        mode: "Insert_File",
+    for (const att of attachments) {
+      await saveAttachmentMetaModel({
         emailId: emailId,
-        filename: file.fileName,
-        filepath: file.filePath,
+        filename: att.filename,
+        messageId: att.messageId,
+        partId : att.partId
       });
     }
     return { success: true, message: "Attachments saved successfully" };
@@ -20,6 +20,24 @@ async function saveAttachmentsController(emailId, files) {
     return { success: false, error: error.message };
   }
 }
+
+// async function saveAttachmentsController(emailId, files) {
+//   try {
+//     for (let file of files) {
+//       await EmailAttachmentModel({
+//         mode: "Insert_File",
+//         emailId: emailId,
+//         filename: file.fileName,
+//         filepath: file.filePath,
+//       });
+//     }
+//     return { success: true, message: "Attachments saved successfully" };
+
+//   } catch (error) {
+//     console.error("Attachment Save Error:", error.message);
+//     return { success: false, error: error.message };
+//   }
+// }
 
 async function GetEmailAttachmentController(req ,res) {
        try {

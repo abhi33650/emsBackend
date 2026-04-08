@@ -28,13 +28,13 @@ async function getEmailWithRemarks(params) {
     request.input("emailid", sql.Int, params.emailId);
     request.input("remarkBy", sql.Int, 0); 
     request.input("remark", sql.VarChar(500), ""); 
-
+    
     const result = await request.execute("dbo.pEmailRemarks");
-
+     
     return result.recordset; 
   } catch (error) {
-    console.error("Error in getEmailWithRemarks:", error);
+    console.error("Error in get Email With Remarks:", error);
     throw error;
   }
 }
-module.exports = {RemarkSendModel ,getEmailWithRemarks};
+module.exports = {RemarkSendModel ,getEmailWithRemarks};          
