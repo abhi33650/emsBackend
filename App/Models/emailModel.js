@@ -25,7 +25,8 @@ async function getThreadData(params) {
   return result.recordset;
 }
 
-async function getemailData(params) {
+async function 
+getemailData(params) {
   const pool = await dbConnect();
   const request = pool.request();
   request.input("Mode", sql.VarChar(10), "GET")

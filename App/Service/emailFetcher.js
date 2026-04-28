@@ -28,7 +28,7 @@ async function fetchEmails() {
     const connection = await Imap.connect(config);
     await connection.openBox("INBOX");
 
-    const messages = await connection.search(["UNSEEN"], {
+    const messages = await connection.search(["UNSEENb"], {
       bodies: [""],
       struct: true,   
       markSeen: true,

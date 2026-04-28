@@ -1,8 +1,18 @@
 const { InsertEmail, getemailData ,  getThreadData, updateReadStatusModel } = require("../Models/emailModel");
+const fetchEmails = require("../utils/emailhelpr");
+const { saveAttachmentsController } = require("./attachmentController");
+
+
+async function startEmailPolling() {
+  await fetchEmails(saveemail, saveAttachmentsController)
+}
 
 const getemail = async (req, res) => {
+  
   try {
+     await startEmailPolling();
     const result = await getemailData();
+   
     return res.status(200).json({
       success: true,
       data: result,

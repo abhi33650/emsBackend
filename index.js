@@ -40,13 +40,13 @@ app.use("/api/replyEmail",ReplyRouter)
 app.use("/api/remark", RemakrRouter)
 app.use("/api/showattachment",attachRouter)
 app.use("/attachments", require("express").static("D:/EmailAttachment"));
-async function startEmailPolling() {
-  await fetchEmails();
-  setInterval(async ()=>{
-    await fetchEmails();
-  },8000);
-}
-startEmailPolling();
+// async function startEmailPolling() {
+//   await fetchEmails();
+//   setInterval(async ()=>{
+//     await fetchEmails();
+//   },8000);
+// }
+// startEmailPolling();
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

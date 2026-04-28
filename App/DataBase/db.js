@@ -25,3 +25,8 @@ const dbConnect = async () => {
 };
 
 module.exports = { sql, dbConnect };
+
+  // user:process.env.DATABASE_USER,
+  // password:process.env.DATABASE_NAME,
+  // server: process.env.SERVER_NAME,
+  // database:process.env.DATABASE_NAME,

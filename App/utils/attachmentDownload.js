@@ -219,7 +219,6 @@ function getAttachmentFromGmail(messageId, fileName) {
           });
         });
       };
-
       searchInFolder(0);
     });
 
@@ -228,7 +227,7 @@ function getAttachmentFromGmail(messageId, fileName) {
       reject(err);
     });
   });
-}
+}            
 
 // ✅ Separated fetch logic for clarity
 function fetchAttachment(imap, results, fileName, resolve, reject) {
@@ -264,7 +263,7 @@ function fetchAttachment(imap, results, fileName, resolve, reject) {
       }
     });
   });
-
+ 
   fetch.once("error", (err) => {
     imap.end();
     reject(err);
